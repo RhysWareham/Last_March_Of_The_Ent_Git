@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.TextCore.Text;
 
 public class LeaningControl : MonoBehaviour
 {

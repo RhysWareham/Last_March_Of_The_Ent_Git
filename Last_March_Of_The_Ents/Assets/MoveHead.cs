@@ -1,14 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
-using UnityEditor.Presets;
 using UnityEngine;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting.ReorderableList;
 
 public class MoveHead : MonoBehaviour
 {
