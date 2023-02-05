@@ -4879,18 +4879,6 @@ PrefabInstance:
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4372028771104585042, guid: 41ec37d170de33c468a4901f25a3e027, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4372028771104585042, guid: 41ec37d170de33c468a4901f25a3e027, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4372028771104585042, guid: 41ec37d170de33c468a4901f25a3e027, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4372028771104585042, guid: 41ec37d170de33c468a4901f25a3e027, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.7
       objectReference: {fileID: 0}
@@ -4946,18 +4934,6 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4645249328804910199, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645249328804910199, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645249328804910199, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645249328804910199, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.55
       objectReference: {fileID: 0}
@@ -5000,22 +4976,6 @@ PrefabInstance:
     - target: {fileID: 6580036020591533233, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
       propertyPath: m_Name
       value: Wind
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420197828403216622, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: startDelay.scalar
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420197828403216622, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: VelocityModule.x.scalar
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420197828403216622, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: VelocityModule.y.scalar
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420197828403216622, guid: 6c83b9c1d7dfe944db6973ff85c0bd51, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
