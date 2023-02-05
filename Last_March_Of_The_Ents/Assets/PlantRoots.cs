@@ -28,55 +28,64 @@ public class PlantRoots : MonoBehaviour
         initialLeftPos = rootLeft.position;
         initialRightPos = rootRight.position;
 
-        desiredPositionRight = new Vector3(rootRight.position.x, -0.55f, -0.28f);
-        desiredPositionLeft = new Vector3(rootLeft.position.x, -0.55f, -0.28f);
+        desiredPositionRight = new Vector3(rootRight.position.x, -0.75f, 0.3f);
+        desiredPositionLeft = new Vector3(rootLeft.position.x, -0.77f, 0.3f);
+    }
+
+    public void ResetRoots()
+    {
+        rootLeft.position = initialLeftPos;
+        rootRight.position = initialRightPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        leftDirection = rightDirection = 0;
-        if (Input.GetKey(KeyCode.RightArrow))
+        if(GameControllerScript.gameCanStart)
         {
-            rightDirection = 1;
-            leftDirection = -1;
-
-            if (Vector3.Distance(rootRight.position, desiredPositionRight) > 0.1f && canDigRight)
+            leftDirection = rightDirection = 0;
+            if (Input.GetKey(KeyCode.RightArrow))
             {
-                rootRight.position = Vector3.MoveTowards(rootRight.position, desiredPositionRight, speed * Time.deltaTime * rightDirection);
+                rightDirection = 1;
+                leftDirection = -1;
 
-                if(Vector3.Distance(rootLeft.position, initialLeftPos) > 0.1f)
+                if (Vector3.Distance(rootRight.position, desiredPositionRight) > 0.1f && canDigRight)
                 {
-                    rootLeft.position = Vector3.MoveTowards(rootLeft.position, initialLeftPos, speed * Time.deltaTime);
-                }
+                    rootRight.position = Vector3.MoveTowards(rootRight.position, desiredPositionRight, speed * Time.deltaTime * rightDirection);
 
-                canDigLeft = true;
+                    if(Vector3.Distance(rootLeft.position, initialLeftPos) > 0.1f)
+                    {
+                        rootLeft.position = Vector3.MoveTowards(rootLeft.position, initialLeftPos, speed * Time.deltaTime);
+                    }
+
+                    canDigLeft = true;
+                }
+                else
+                {
+                    canDigRight = false;
+                }
             }
-            else
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
-                canDigRight = false;
+                rightDirection = -1;
+                leftDirection = 1;
+
+                if (Vector3.Distance(rootLeft.position, desiredPositionLeft) > 0.1f && canDigLeft)
+                {
+                    rootLeft.position = Vector3.MoveTowards(rootLeft.position, desiredPositionLeft, speed * Time.deltaTime * leftDirection);
+                
+                    if (Vector3.Distance(rootRight.position, initialRightPos) > 0.1f)
+                    {
+                        rootRight.position = Vector3.MoveTowards(rootRight.position, initialRightPos, speed * Time.deltaTime);
+                    }
+                
+                    canDigRight = true;
+                }
+                else
+                {
+                    canDigLeft = false;
+                }
             }
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            rightDirection = -1;
-            leftDirection = 1;
-
-            if (Vector3.Distance(rootLeft.position, desiredPositionLeft) > 0.1f && canDigLeft)
-            {
-                rootLeft.position = Vector3.MoveTowards(rootLeft.position, desiredPositionLeft, speed * Time.deltaTime * leftDirection);
-                
-                if (Vector3.Distance(rootRight.position, initialRightPos) > 0.1f)
-                {
-                    rootRight.position = Vector3.MoveTowards(rootRight.position, initialRightPos, speed * Time.deltaTime);
-                }
-                
-                canDigRight = true;
-            }
-            else
-            {
-                canDigLeft = false;
-            }
         }
-    }
 }
