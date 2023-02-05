@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: roots
+    uniqueID: 3151599199
+    locked: 0
+  - name: Ent
+    uniqueID: 4098820307
+    locked: 0
