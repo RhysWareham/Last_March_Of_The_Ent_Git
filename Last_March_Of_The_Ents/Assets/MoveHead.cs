@@ -1,7 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
+using UnityEditor.Presets;
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.InputSystem;
+using Unity.VisualScripting.ReorderableList;
 
 public class MoveHead : MonoBehaviour
 {
@@ -12,6 +19,8 @@ public class MoveHead : MonoBehaviour
     private int move = 0;
     private bool movingRight = true;
     private Vector2 targetPosition = new Vector2();
+    private bool canMoveRight = true;
+    private bool canMoveLeft = true;
 
     private void Start()
     {
@@ -23,13 +32,15 @@ public class MoveHead : MonoBehaviour
     {
         move = 0;
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) && canMoveRight)
         {
             move = 1;
+            canMoveLeft = true;
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) && canMoveLeft)
         {
             move = -1;
+            canMoveRight = true;
         }
 
         if (move != 0)
@@ -66,26 +77,28 @@ public class MoveHead : MonoBehaviour
                 if(movingRight)
                 {
                     //If not at the end
-                    if (lastPointPassed < points.Length - 1)
+                    if (lastPointPassed < points.Length - 2)
                     {
                         lastPointPassed = targetPoint;
                         targetPoint++;
                     }
                     else
                     {
+                        canMoveRight = false;
                         //The ent is falling over!!!!!!!!!!!!!!!
                     }
                 }
                 else
                 {
                     //If not at the end
-                    if (lastPointPassed > 0)
+                    if (lastPointPassed > 1)
                     {
                         lastPointPassed = targetPoint;
                         targetPoint--;
                     }
                     else
                     {
+                        canMoveLeft = false;
                         //The ent is falling over!!!!!!!!!!!!!!!
                     }
                 }
