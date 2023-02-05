@@ -49,39 +49,53 @@ public class TreeArmController : MonoBehaviour
         
     }
 
+    public void ResetPlayer()
+    {
+        leftCanMove = true;
+        rightCanMove = true;
+        _leftArmRB.velocity = Vector2.zero;
+        _rightArmRB.velocity = Vector2.zero;
+        _leftMoveInput = 0;
+        _rightMoveInput = 0;
+    }
+
     private void FixedUpdate()
     {
-        if (_leftArmRB.transform.position.y > _armMaxHeight && leftCanMove)
+        if ( GameControllerScript.gameCanStart)
         {
-            leftCanMove = false;
-            _leftArmRB.velocity = Vector2.zero;
-        }
-        else
-        {
-            leftCanMove = true;
-        }
+            if (_leftArmRB.transform.position.y > _armMaxHeight && leftCanMove)
+            {
+                leftCanMove = false;
+                _leftArmRB.velocity = Vector2.zero;
+            }
+            else
+            {
+                leftCanMove = true;
+            }
 
-        if(_rightArmRB.transform.position.y > _armMaxHeight && rightCanMove)
-        {
-            rightCanMove = false;
-            _rightArmRB.velocity = Vector2.zero;
-        }
-        else
-        {
-            rightCanMove = true;
-        }
+            if(_rightArmRB.transform.position.y > _armMaxHeight && rightCanMove)
+            {
+                rightCanMove = false;
+                _rightArmRB.velocity = Vector2.zero;
+            }
+            else
+            {
+                rightCanMove = true;
+            }
 
-        if (_leftMoveInput > 0 && leftCanMove)
-        {
-            _leftArmRB.AddForce(new Vector2(0, _leftMoveInput) * moveSpeed);
-            _leftArmRB.velocity = Vector2.ClampMagnitude(_leftArmRB.velocity, maxVelocity);
-            Debug.Log("add force");
-        }
+            if (_leftMoveInput > 0 && leftCanMove)
+            {
+                _leftArmRB.AddForce(new Vector2(0, _leftMoveInput) * moveSpeed);
+                _leftArmRB.velocity = Vector2.ClampMagnitude(_leftArmRB.velocity, maxVelocity);
+                Debug.Log("add force");
+            }
 
-        if (_rightMoveInput > 0 && rightCanMove)
-        {
-            _rightArmRB.AddForce(new Vector2(0, _rightMoveInput) * moveSpeed);
-            _rightArmRB.velocity = Vector2.ClampMagnitude(_rightArmRB.velocity, maxVelocity);
+            if (_rightMoveInput > 0 && rightCanMove)
+            {
+                _rightArmRB.AddForce(new Vector2(0, _rightMoveInput) * moveSpeed);
+                _rightArmRB.velocity = Vector2.ClampMagnitude(_rightArmRB.velocity, maxVelocity);
+            }
+
         }
     }
 

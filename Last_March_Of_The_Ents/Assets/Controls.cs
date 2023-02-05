@@ -62,6 +62,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""9fed2231-1f5c-422d-8ff1-f4ea7fc02ba2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""RightLeg"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""114b660d-e234-4520-9efb-1f503dba7b8e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +140,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_PlayControls_RightArm = m_PlayControls.FindAction("RightArm", throwIfNotFound: true);
         m_PlayControls_LeftLeg = m_PlayControls.FindAction("LeftLeg", throwIfNotFound: true);
         m_PlayControls_RightLeg = m_PlayControls.FindAction("RightLeg", throwIfNotFound: true);
+        m_PlayControls_Reset = m_PlayControls.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +204,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayControls_RightArm;
     private readonly InputAction m_PlayControls_LeftLeg;
     private readonly InputAction m_PlayControls_RightLeg;
+    private readonly InputAction m_PlayControls_Reset;
     public struct PlayControlsActions
     {
         private @Controls m_Wrapper;
@@ -191,6 +213,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @RightArm => m_Wrapper.m_PlayControls_RightArm;
         public InputAction @LeftLeg => m_Wrapper.m_PlayControls_LeftLeg;
         public InputAction @RightLeg => m_Wrapper.m_PlayControls_RightLeg;
+        public InputAction @Reset => m_Wrapper.m_PlayControls_Reset;
         public InputActionMap Get() { return m_Wrapper.m_PlayControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -212,6 +235,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RightLeg.started -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnRightLeg;
                 @RightLeg.performed -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnRightLeg;
                 @RightLeg.canceled -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnRightLeg;
+                @Reset.started -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnReset;
+                @Reset.performed -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnReset;
+                @Reset.canceled -= m_Wrapper.m_PlayControlsActionsCallbackInterface.OnReset;
             }
             m_Wrapper.m_PlayControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -228,6 +254,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RightLeg.started += instance.OnRightLeg;
                 @RightLeg.performed += instance.OnRightLeg;
                 @RightLeg.canceled += instance.OnRightLeg;
+                @Reset.started += instance.OnReset;
+                @Reset.performed += instance.OnReset;
+                @Reset.canceled += instance.OnReset;
             }
         }
     }
@@ -238,5 +267,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnRightArm(InputAction.CallbackContext context);
         void OnLeftLeg(InputAction.CallbackContext context);
         void OnRightLeg(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
 }
