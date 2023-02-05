@@ -14,13 +14,20 @@ public class MoveHead : MonoBehaviour
 {
     public Vector2[] points;
     public float speed;
-    private int lastPointPassed = 0;
-    private int targetPoint = 0;
+    [SerializeField] private int lastPointPassed = 0;
+    [SerializeField] private int targetPoint = 0;
     private int move = 0;
-    private bool movingRight = true;
-    private Vector2 targetPosition = new Vector2();
-    private bool canMoveRight = true;
-    private bool canMoveLeft = true;
+    [SerializeField] private bool movingRight = true;
+    [SerializeField] private bool leaningRight = true;
+    [SerializeField] private bool canMoveRight = true;
+    [SerializeField] private bool canMoveLeft = true;
+    private Vector2 currentPosition = Vector2.zero;
+    [SerializeField] private Vector2 targetPosition = new Vector2();
+    [SerializeField] private Vector2 leaningTarget = new Vector2();
+    [Range(-1, 1)]
+    public float windStrength = 0;
+    public float gravitySpeed;
+    private bool dead = false;
 
     private void Start()
     {
@@ -30,80 +37,186 @@ public class MoveHead : MonoBehaviour
 
     void Update()
     {
-        move = 0;
-
-        if (Input.GetKey(KeyCode.RightArrow) && canMoveRight)
+        if(!dead)
         {
-            move = 1;
-            canMoveLeft = true;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) && canMoveLeft)
-        {
-            move = -1;
-            canMoveRight = true;
-        }
+            move = 0;
 
-        if (move != 0)
-        {
-            //If we were moving right, and move is now -1
-            if (movingRight && move == -1)
+            currentPosition = transform.localPosition;
+
+            //If head is on right side
+            if (currentPosition.x > points[4].x)
             {
-                //Set targetPos to be previous point
-                targetPosition = points[targetPoint - 1];
-                targetPoint = targetPoint - 1;
+                leaningRight = true;
 
-                movingRight = false;
-            }
-            else if (!movingRight && move == 1)
-            {
-                //Set targetPos to be next point
-                targetPosition = points[targetPoint + 1];
-                targetPoint = targetPoint + 1;
-
-                movingRight = true;
-            }
-
-            targetPosition = points[targetPoint];
-            Vector2 currentPosition = transform.localPosition;
-            Vector2 direction = (targetPosition - currentPosition).normalized;
-
-            transform.localPosition = Vector2.MoveTowards(currentPosition, targetPosition, speed * Time.deltaTime);
-
-            
-            //If distance between current position and target position is less than 0.1f
-            if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
-            {
-                //If moving right
-                if(movingRight)
+                //If current target point is further right than x
+                if (points[targetPoint].x > currentPosition.x)
                 {
-                    //If not at the end
-                    if (lastPointPassed < points.Length - 2)
-                    {
-                        lastPointPassed = targetPoint;
-                        targetPoint++;
-                    }
-                    else
-                    {
-                        canMoveRight = false;
-                        //The ent is falling over!!!!!!!!!!!!!!!
-                    }
+                    targetPosition = points[targetPoint];   
                 }
                 else
                 {
-                    //If not at the end
-                    if (lastPointPassed > 1)
+                    if (targetPoint + 1 < points.Length - 1)
                     {
-                        lastPointPassed = targetPoint;
-                        targetPoint--;
+                        targetPosition = points[targetPoint + 1];
                     }
                     else
                     {
-                        canMoveLeft = false;
-                        //The ent is falling over!!!!!!!!!!!!!!!
+                        //Can Fall
+                        //KillPlayer();
                     }
                 }
             }
+            //If head is on Left side
+            else if (currentPosition.x < points[4].x)
+            {
+                leaningRight = false;
+
+                //If current target point is further left than x
+                if (points[targetPoint].x < currentPosition.x)
+                {
+                    //Target position should stay as the targetPoint
+                    targetPosition = points[targetPoint];
+                }
+                else
+                {
+                    if (targetPoint - 1 > 0)
+                    {
+                        targetPosition = points[targetPoint - 1];
+                    }
+                    else
+                    {
+                        //Can Fall
+                        //KillPlayer();
+                    }
+                }
+            }
+
+            if(lastPointPassed != 0 && lastPointPassed != points.Length - 1)
+            {
+                canMoveLeft = true;
+                canMoveRight = true;
+            }
+
+            if (Input.GetKey(KeyCode.RightArrow) && canMoveRight)
+            {
+                move = 1;
+                canMoveLeft = true;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && canMoveLeft)
+            {
+                move = -1;
+                canMoveRight = true;
+            }
+
             
+        
+            if (move != 0)
+            {
+                //If we were moving right, and move is now -1
+                if (movingRight && move == -1)
+                {
+                    //Set targetPos to be previous point
+                    targetPosition = points[targetPoint - 1];
+                    targetPoint = targetPoint - 1;
+
+                    movingRight = false;
+                }
+                else if (!movingRight && move == 1)
+                {
+                    //Set targetPos to be next point
+                    targetPosition = points[targetPoint + 1];
+                    targetPoint = targetPoint + 1;
+
+                    movingRight = true;
+                }
+
+                targetPosition = points[targetPoint];
+                Vector2 direction = (targetPosition - currentPosition).normalized;
+
+                transform.localPosition = Vector2.MoveTowards(currentPosition, targetPosition, (speed * Time.deltaTime) + windStrength);
+
+            
+                //If distance between current position and target position is less than 0.1f
+                if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+                {
+                    //If moving right
+                    if(movingRight)
+                    {
+                        //If not at the end
+                        if (lastPointPassed < points.Length - 2)
+                        {
+                            lastPointPassed = targetPoint;
+                            targetPoint++;
+                        }
+                        else
+                        {
+                            canMoveRight = false;
+                            //The ent is falling over!!!!!!!!!!!!!!!
+                            KillPlayer();
+                        }
+                    }
+                    else
+                    {
+                        //If not at the end
+                        if (lastPointPassed > 1)
+                        {
+                            lastPointPassed = targetPoint;
+                            targetPoint--;
+                        }
+                        else
+                        {
+                            canMoveLeft = false;
+                            //The ent is falling over!!!!!!!!!!!!!!!
+                            KillPlayer();
+                        }
+                    }
+                }
+            }
+            else if(gravitySpeed != 0)
+            {
+                transform.localPosition = Vector2.MoveTowards(currentPosition, targetPosition, (gravitySpeed * Time.deltaTime) + windStrength);
+
+                //If distance between current position and target position is less than 0.1f
+                if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+                {
+                    //If moving right
+                    if (leaningRight)
+                    {
+                        //If not at the end
+                        if (lastPointPassed < points.Length - 1)
+                        {
+                            lastPointPassed = targetPoint;
+                            targetPoint++;
+                        }
+                        else
+                        {
+                            canMoveRight = false;
+                            //The ent is falling over!!!!!!!!!!!!!!!
+                        }
+                    }
+                    else
+                    {
+                        //If not at the end
+                        if (lastPointPassed > 0)
+                        {
+                            lastPointPassed = targetPoint;
+                            targetPoint--;
+                        }
+                        else
+                        {
+                            canMoveLeft = false;
+                            //The ent is falling over!!!!!!!!!!!!!!!
+                        }
+                    }
+                }
+            }
         }
     }
+
+    private void KillPlayer()
+    {
+        dead = true;
+        Debug.Log("DEAD!");
+    }
+
 }
