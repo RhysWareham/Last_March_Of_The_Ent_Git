@@ -228,6 +228,7 @@ public class MoveHead : MonoBehaviour
                         //If moving right
                         if (leaningRight)
                         {
+                            movingRight = true;
                             //If not at the end
                             if (lastPointPassed < points.Length - 1)
                             {
@@ -243,6 +244,7 @@ public class MoveHead : MonoBehaviour
                         }
                         else
                         {
+                            movingRight = false;
                             //If not at the end
                             if (lastPointPassed > 0)
                             {
