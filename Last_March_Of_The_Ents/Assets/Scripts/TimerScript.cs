@@ -18,6 +18,7 @@ public class TimerScript : MonoBehaviour
     [SerializeField] TextMeshProUGUI highScoreAxeText;
 
     private InputAction _resetButton;
+    private InputAction _exitButton;
     [SerializeField] private PlayerInput _playerInput;
 
     [SerializeField] MoveHead headScript;
@@ -37,14 +38,22 @@ public class TimerScript : MonoBehaviour
     void Start()
     {
         _resetButton = _playerInput.actions["Reset"];
+        _exitButton = _playerInput.actions["Exit"];
 
         _resetButton.performed += Reset_Performed;
+        _exitButton.performed += Exit_Performed;
     }
 
     private void Reset_Performed(InputAction.CallbackContext obj)
     {
         canStartTimer = false;
         OnGameStart();
+    }
+
+    private void Exit_Performed(InputAction.CallbackContext obj)
+    {
+        Application.Quit();
+        Debug.Log("quit");
     }
 
     // Update is called once per frame
@@ -92,7 +101,6 @@ public class TimerScript : MonoBehaviour
 
     public void OnGameStart()
     {
-
         rootsScript.ResetRoots();
         headScript.SetupCharacter();
         armScript.ResetPlayer();
@@ -126,7 +134,6 @@ public class TimerScript : MonoBehaviour
             if(axe != null)
             {
                 Destroy(axe);
-
             }
         }
     }
